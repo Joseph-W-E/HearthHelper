@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_all_cards"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="All Cards" />
+        <item
+            android:id="@+id/nav_deck_builder"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Deck Builder" />
+        <item
+            android:id="@+id/nav_tournament"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Tournament" />
+        <item
+            android:id="@+id/nav_win_tracker"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Win Tracker" />
+    </group>
+
+    <item android:title="Share">
+        <menu>
+            <item
+                android:id="@+id/nav_share_decks"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Decks" />
+            <item
+                android:id="@+id/nav_share_cards"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Cards" />
+        </menu>
+    </item>
+
+</menu>
