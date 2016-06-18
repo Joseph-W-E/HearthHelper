@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">HearthHelper</string>
 
+    <string name="all_cards_activity">That\'s a lot of cards...</string>
+    <string name="challenge_activity">Mysterious Challenger!</string>
+    <string name="deck_builder_activity">My deck has no pathetic cards!</string>
+    <string name="win_tracker_activity">Ugh, who even likes aggro?</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 

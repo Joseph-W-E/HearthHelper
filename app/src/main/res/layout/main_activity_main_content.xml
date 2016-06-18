@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <Button
+        android:id="@+id/btn_all_cards_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="All Cards Activity"/>
+    <Button
+        android:id="@+id/btn_challenge_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Challenge Activity"/>
+    <Button
+        android:id="@+id/btn_deck_builder_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deck Builder Activity"/>
+    <Button
+        android:id="@+id/btn_win_tracker_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Win Tracker Activity"/>
+</LinearLayout>

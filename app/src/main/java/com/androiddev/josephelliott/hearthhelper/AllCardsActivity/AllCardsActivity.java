@@ -1,4 +1,4 @@
-package com.androiddev.josephelliott.hearthhelper;
+package com.androiddev.josephelliott.hearthhelper.AllCardsActivity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,9 +15,9 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import com.androiddev.josephelliott.hearthhelper.AllCards.CardViewAdapter;
 import com.androiddev.josephelliott.hearthhelper.Interfaces.HearthstoneAPIEndPointInterface;
 import com.androiddev.josephelliott.hearthhelper.Model.CardSetWrapper;
+import com.androiddev.josephelliott.hearthhelper.R;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,7 +33,7 @@ public class AllCardsActivity extends AppCompatActivity implements NavigationVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.all_cards_activity_base_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

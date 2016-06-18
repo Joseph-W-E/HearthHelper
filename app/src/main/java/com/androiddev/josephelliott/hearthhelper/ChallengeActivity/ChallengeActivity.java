@@ -8,9 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.GridView;
 
-import com.androiddev.josephelliott.hearthhelper.Model.CardSetWrapper;
 import com.androiddev.josephelliott.hearthhelper.R;
 
 /**
@@ -18,13 +16,10 @@ import com.androiddev.josephelliott.hearthhelper.R;
  */
 public class ChallengeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private CardSetWrapper cardSetWrapper;
-    private GridView gridView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.challenge_activity_base_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

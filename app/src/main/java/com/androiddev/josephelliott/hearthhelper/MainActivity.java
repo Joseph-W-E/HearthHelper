@@ -1,5 +1,6 @@
 package com.androiddev.josephelliott.hearthhelper;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -8,26 +9,59 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.GridView;
+import android.view.View;
+import android.widget.Button;
 
-import com.androiddev.josephelliott.hearthhelper.Model.CardSetWrapper;
+import com.androiddev.josephelliott.hearthhelper.AllCardsActivity.AllCardsActivity;
+import com.androiddev.josephelliott.hearthhelper.ChallengeActivity.ChallengeActivity;
+import com.androiddev.josephelliott.hearthhelper.DeckBuilderActivity.DeckBuilderActivity;
+import com.androiddev.josephelliott.hearthhelper.WinTrackerActivity.WinTrackerActivity;
+
 
 /**
  * Created by JoeyElliott on 6/17/2016.
  */
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private CardSetWrapper cardSetWrapper;
-    private GridView gridView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_activity_base_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Button btnAllCardsActivity = (Button) findViewById(R.id.btn_all_cards_activity);
+        btnAllCardsActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNewActivity(AllCardsActivity.class);
+            }
+        });
+        Button btnChallengeActivity = (Button) findViewById(R.id.btn_challenge_activity);
+        btnChallengeActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNewActivity(ChallengeActivity.class);
+            }
+        });
+        Button btnDeckBuilderActivity = (Button) findViewById(R.id.btn_deck_builder_activity);
+        btnDeckBuilderActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNewActivity(DeckBuilderActivity.class);
+            }
+        });
+        Button btnWinTrackerActivity = (Button) findViewById(R.id.btn_win_tracker_activity);
+        btnWinTrackerActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNewActivity(WinTrackerActivity.class);
+            }
+        });
+    }
 
+    private void startNewActivity(Class activity) {
+        startActivity(new Intent(this, activity));
     }
 
     @Override

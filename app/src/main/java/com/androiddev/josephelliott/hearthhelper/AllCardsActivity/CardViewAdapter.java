@@ -1,4 +1,4 @@
-package com.androiddev.josephelliott.hearthhelper.AllCards;
+package com.androiddev.josephelliott.hearthhelper.AllCardsActivity;
 
 import android.content.Context;
 import android.util.Log;
