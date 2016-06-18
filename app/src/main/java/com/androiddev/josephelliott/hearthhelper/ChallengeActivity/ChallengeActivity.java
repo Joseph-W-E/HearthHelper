@@ -1,4 +1,4 @@
-package com.androiddev.josephelliott.hearthhelper;
+package com.androiddev.josephelliott.hearthhelper.ChallengeActivity;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -11,11 +11,12 @@ import android.view.MenuItem;
 import android.widget.GridView;
 
 import com.androiddev.josephelliott.hearthhelper.Model.CardSetWrapper;
+import com.androiddev.josephelliott.hearthhelper.R;
 
 /**
  * Created by JoeyElliott on 6/17/2016.
  */
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ChallengeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private CardSetWrapper cardSetWrapper;
     private GridView gridView;
