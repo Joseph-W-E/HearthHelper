@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.StrictMode;
 
+import com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Utility.BitmapUtility;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;
@@ -15,12 +16,6 @@ import java.util.ArrayList;
  * Created by Joseph Elliott on 5/14/2016.
  */
 public class Card implements Comparable<Card> {
-    /*
-    public static String[] LIST_OF_MECHANICS = {
-            "Battlecry", "Deathrattle", "Charge", "Taunt",
-            "Divine Shield", "Stealth", "Enrage", "Windfury",
-            "Choose One", "Overload", "Inspire"
-    };*/
 
     @SerializedName("cardId")
     private String cardId;
@@ -72,11 +67,11 @@ public class Card implements Comparable<Card> {
 
     @SerializedName("img")
     private String img;
-    private Bitmap bitmapImg;
+    private byte[] imgByteArray;
 
     @SerializedName("imgGold")
     private String imgGold;
-    private Bitmap bitmapImgGold;
+    private byte[] imgGoldByteArray;
 
     public Card() {
 
@@ -226,12 +221,12 @@ public class Card implements Comparable<Card> {
         this.img = img;
     }
 
-    public Bitmap getBitmapImg() {
-        return bitmapImg;
+    public byte[] getImgByteArray() {
+        return imgByteArray;
     }
 
-    public void setBitmapImg(Bitmap bitmap) {
-        bitmapImg = bitmap;
+    public void setImgByteArray(byte[] array) {
+        imgByteArray = array;
     }
 
     public String getImgGold() {
@@ -242,16 +237,16 @@ public class Card implements Comparable<Card> {
         this.imgGold = imgGold;
     }
 
-    public Bitmap getBitmapImgGold() {
-        return bitmapImgGold;
+    public byte[] getImgGoldByteArray() {
+        return imgGoldByteArray;
     }
 
-    public void setBitmapImgGold(Bitmap bitmap) {
-        bitmapImgGold = bitmap;
+    public void setImgGoldByteArray(byte[] array) {
+        imgGoldByteArray = array;
     }
 
     public void initializeBitmap() {
-        if (bitmapImg == null) {
+        if (imgByteArray == null) {
             try {
                 if (android.os.Build.VERSION.SDK_INT > 9) {
                     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -259,13 +254,17 @@ public class Card implements Comparable<Card> {
                 }
                 URL url = new URL(img);
                 Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                bitmapImg = bmp;
+                imgByteArray = BitmapUtility.getBytes(bmp);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void initializeGoldBitmap() {
+
     }
 
     @Override

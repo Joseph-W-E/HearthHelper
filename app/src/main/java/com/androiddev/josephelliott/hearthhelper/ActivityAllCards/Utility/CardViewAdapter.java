@@ -27,6 +27,10 @@ public class CardViewAdapter extends BaseAdapter {
         Collections.sort(cards);
     }
 
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
+
     @Override
     public int getCount() {
         return cards.size();
@@ -50,23 +54,20 @@ public class CardViewAdapter extends BaseAdapter {
             // if it's not recycled, initialize some attributes
             imageView = new ImageView(context);
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-
-            // if our card for this position doesn't have an image, get one
-            if (cards.get(position).getBitmapImg() == null) {
-                BitmapToImageViewAsyncTask bitmapToImageViewAsyncTask = new BitmapToImageViewAsyncTask(cards.get(position).getBitmapImg(), imageView);
-                bitmapToImageViewAsyncTask.execute(cards.get(position).getImg());
-                Log.d("Asynctask", "Running an async task for " + cards.get(position).getName());
-            } else {
-                imageView.setImageBitmap(cards.get(position).getBitmapImg());
-            }
         } else {
             imageView = (ImageView) convertView;
         }
 
+        /*
+        try {
+            BitmapUtility.BitmapToImageViewAsyncTask asyncTask = new BitmapUtility.
+                    BitmapToImageViewAsyncTask(cards.get(position), context);
+            asyncTask.execute();
+        } catch (NullPointerException e) {
+            Log.w("NullPointer", e);
+        }*/
+
         return imageView;
     }
 
-    public ArrayList<Card> getCards() {
-        return cards;
-    }
 }

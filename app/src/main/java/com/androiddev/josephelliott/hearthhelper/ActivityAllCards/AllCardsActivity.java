@@ -2,6 +2,8 @@ package com.androiddev.josephelliott.hearthhelper.ActivityAllCards;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,12 +15,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Interfaces.HearthstoneAPIEndPointInterface;
 import com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Model.Card;
 import com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Model.CardSetWrapper;
 import com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Storage.CardDataSource;
+import com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Utility.BitmapUtility;
 import com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Utility.CardViewAdapter;
 import com.androiddev.josephelliott.hearthhelper.R;
 
@@ -26,6 +30,7 @@ import org.json.JSONException;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,6 +47,7 @@ public class AllCardsActivity extends AppCompatActivity implements NavigationVie
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Setup the action bar
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -50,11 +56,11 @@ public class AllCardsActivity extends AppCompatActivity implements NavigationVie
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // If this is the first time the user has opened the app, download the cards
+        // Initialize the views and data we will need for this activity
         final GridView gridView = (GridView) findViewById(R.id.all_cards_gridview);
-        ArrayList<Card> cards = new ArrayList<Card>();
+        ArrayList<Card> cards = new ArrayList<>();
 
-        // Check if the user has already retrieved the list of cards
+        // Check if the user already has the cards stores
         CardDataSource dataSource = new CardDataSource(this);
         boolean cardsAlreadyExist = false;
         try {
@@ -66,18 +72,43 @@ public class AllCardsActivity extends AppCompatActivity implements NavigationVie
             dataSource.close();
         }
 
-        if (cardsAlreadyExist) {
+        // If this is the first time the user has opened the app, download the cards
+        if (!cardsAlreadyExist) {
             // Get all the cards from JSON, will update grid view on success
             Toast.makeText(this, "First time? Downloading all cards.", Toast.LENGTH_LONG).show();
             cards = JSONCallToGetAllCards(gridView, this);
+            // Since all of these cards are new, we need the bitmaps for them all
+            for (Card card : cards) {
+                card.initializeBitmap();
+                card.initializeGoldBitmap();
+            }
         } else {
             // Get all the cards from Local Storage, will update grid view manually
-            cards = new ArrayList<>();
+            Toast.makeText(this, "Cards already exist! Yippee!", Toast.LENGTH_LONG).show();
+            try {
+                dataSource.open();
+                cards = dataSource.getCards();
+            } catch (SQLException | JSONException e) {
+                e.printStackTrace();
+            } finally {
+                dataSource.close();
+            }
             updateGridViewAdapter(gridView, cards, this);
         }
 
+        // Note that we set "cards" equal to the actual list of cards so that we have access
+        // to it if we want to use them here in the future
+
     }
 
+    /**
+     * Updates the grid view's adapter to start loading Bitmaps.
+     * Note that the bitmaps should be generated ONLY when they are in view.
+     * For more information on this, go to {@link CardViewAdapter}.
+     * @param gridView The main GridView from the AllCardsActivity main content layout.
+     * @param cards The entire list of cards that are available.
+     * @param context The context in which we are calling this method (AllCardsActivity).
+     */
     private static void updateGridViewAdapter(final GridView gridView, ArrayList<Card> cards, Context context) {
         gridView.setAdapter(new CardViewAdapter(context, cards));
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -90,6 +121,14 @@ public class AllCardsActivity extends AppCompatActivity implements NavigationVie
         });
     }
 
+    /**
+     * Uses the REST api to get the entire list of cards from Mashape.
+     * Note that the call is an async task. All the cards loaded are saved to local storage.
+     * Once the cards are saved, they will begin displaying on the grid view.
+     * @param gridView
+     * @param context
+     * @return
+     */
     private ArrayList<Card> JSONCallToGetAllCards(final GridView gridView, final Context context) {
         // List of cards to return
         final ArrayList<Card> cards = new ArrayList<>();
@@ -112,9 +151,15 @@ public class AllCardsActivity extends AppCompatActivity implements NavigationVie
                         for (Card card : cards) {
                             dataSource.createCard(card);
                         }
-                        dataSource.close();
                     } catch (SQLException | JSONException e) {
                         e.printStackTrace();
+                    } finally {
+                        dataSource.close();
+                    }
+                    for (Card card : cards) {
+                            BitmapUtility.BitmapToImageViewAsyncTask asyncTask = new BitmapUtility.
+                                    BitmapToImageViewAsyncTask(card, context);
+                            asyncTask.execute();
                     }
                     // Update our grid view with the new list of cards
                     updateGridViewAdapter(gridView, cards, context);

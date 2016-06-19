@@ -12,7 +12,8 @@ public class CardSQLiteHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_CARDS = "cards";
     public static final String COLUMN_CARDS_CARD_ID = "cardId";
-    public static final String COLUMN_CARDS_CARD_SET = "name";
+    public static final String COLUMN_CARDS_CARD_NAME = "name";
+    public static final String COLUMN_CARDS_CARD_SET = "cardSet";
     public static final String COLUMN_CARDS_CARD_TYPE = "type";
     public static final String COLUMN_CARDS_CARD_FACTION = "faction";
     public static final String COLUMN_CARDS_CARD_PLAYER_CLASS = "playerClass";
@@ -36,7 +37,8 @@ public class CardSQLiteHelper extends SQLiteOpenHelper {
 
     // Database creation sql statement
     private static final String CARD_DATABASE_CREATE = "create table "
-            + TABLE_CARDS + "(" + COLUMN_CARDS_CARD_ID + " integer primary key, "
+            + TABLE_CARDS + "(" + COLUMN_CARDS_CARD_ID + " primary key, "
+            + COLUMN_CARDS_CARD_NAME + ", "
             + COLUMN_CARDS_CARD_SET + ", "
             + COLUMN_CARDS_CARD_TYPE + ", "
             + COLUMN_CARDS_CARD_FACTION + ", "

@@ -24,6 +24,7 @@ public class CardDataSource {
     private CardSQLiteHelper dbHelper;
     private String[] allColumns = {
             CardSQLiteHelper.COLUMN_CARDS_CARD_ID,
+            CardSQLiteHelper.COLUMN_CARDS_CARD_NAME,
             CardSQLiteHelper.COLUMN_CARDS_CARD_SET,
             CardSQLiteHelper.COLUMN_CARDS_CARD_TYPE,
             CardSQLiteHelper.COLUMN_CARDS_CARD_FACTION,
@@ -57,39 +58,75 @@ public class CardDataSource {
     }
 
     public boolean hasCardsTable() {
-        Cursor cursor = database.rawQuery("SELECT * FROM " + CardSQLiteHelper.TABLE_CARDS +
-                " LIMIT 10;", null);
-        boolean exists = !cursor.moveToFirst();
-        cursor.close();
-        return exists;
+        Cursor cursor = database.rawQuery("SELECT " + CardSQLiteHelper.COLUMN_CARDS_CARD_ID
+                + " from " + CardSQLiteHelper.TABLE_CARDS + " limit 1", null);
+        if (cursor != null) {
+            if (cursor.getCount() > 0) {
+                cursor.close();
+                return true;
+            }
+            cursor.close();
+        }
+        return false;
+        /*
+        Cursor cursor = database.rawQuery(
+                "select DISTINCT tbl_name from sqlite_master where tbl_name = '"
+                        + CardSQLiteHelper.TABLE_CARDS + "'", null);
+        if (cursor != null) {
+            if (cursor.getCount() > 0) {
+                cursor.close();
+                return true;
+            }
+            cursor.close();
+        }
+        return false;
+        */
     }
 
     public void createCard(Card card) throws JSONException {
         ContentValues values = new ContentValues();
 
-        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_ID, card.getCardId());
-        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_SET, card.getCardSet());
-        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_TYPE, card.getType());
-        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_FACTION, card.getFaction());
-        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_PLAYER_CLASS, card.getPlayerClass());
-        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_RARITY, card.getRarity());
-        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_TEXT, card.getText());
-        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_FLAVOR, card.getFlavor());
-        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_ARTIST, card.getArtist());
+        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_ID,
+                card.getCardId() != null ? card.getCardId() : "");
+        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_NAME,
+                card.getName() != null ? card.getName() : "");
+        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_SET,
+                card.getCardSet() != null ? card.getCardSet() : "");
+        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_TYPE,
+                card.getType() != null ? card.getType() : "");
+        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_FACTION,
+                card.getFaction() != null ? card.getFaction() : "");
+        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_PLAYER_CLASS,
+                card.getPlayerClass() != null ? card.getPlayerClass() : "");
+        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_RARITY,
+                card.getRarity() != null ? card.getRarity() : "");
+        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_TEXT,
+                card.getText() != null ? card.getText() : "");
+        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_FLAVOR,
+                card.getFlavor() != null ? card.getFlavor() : "");
+        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_ARTIST,
+                card.getArtist() != null ? card.getArtist() : "");
         values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_COST, card.getCost());
         values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_ATTACK, card.getAttack());
         values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_HEALTH, card.getHealth());
 
         JSONObject json = new JSONObject();
         json.put("name", new JSONArray(card.getMechanics()));
-        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_MECHANICS, json.toString());
+        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_MECHANICS,
+                json.toString() != null ? json.toString() : "");
 
-        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_ELITE, card.isElite());
-        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_COLLECTIBLE, card.isCollectible());
-        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_IMG_URL, card.getImg());
-        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_IMG_BITMAP_AS_STRING, "");
-        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_IMG_GOLD_URL, card.getImgGold());
-        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_IMG_GOLD_BITMAP_AS_STRING, "");
+        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_ELITE,
+                card.isElite() ? 1 : 0);
+        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_COLLECTIBLE,
+                card.isCollectible() ? 1 : 0);
+        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_IMG_URL,
+                card.getImg() != null ? card.getImg() : "");
+        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_IMG_BITMAP_AS_STRING,
+                "" != null ? "" : "");
+        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_IMG_GOLD_URL,
+                card.getImgGold() != null ? card.getImgGold() : "");
+        values.put(CardSQLiteHelper.COLUMN_CARDS_CARD_IMG_GOLD_BITMAP_AS_STRING,
+                "" != null ? "" : "");
 
         database.insert(CardSQLiteHelper.TABLE_CARDS, null, values);
     }
@@ -116,31 +153,43 @@ public class CardDataSource {
         return cards;
     }
 
+    public boolean updateCardImgByteArray(Card card) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(CardSQLiteHelper.COLUMN_CARDS_CARD_IMG_BITMAP_AS_STRING, card.getImgByteArray());
+        database.update(CardSQLiteHelper.TABLE_CARDS, contentValues, CardSQLiteHelper.
+                COLUMN_CARDS_CARD_IMG_BITMAP_AS_STRING + "= ?", new String[] {card.getCardId()});
+        return false;
+    }
+
     private Card cursorToCard(Cursor cursor) throws JSONException {
         Card card = new Card();
-        card.setCardId(cursor.getString(0));
-        card.setName(cursor.getString(1));
-        card.setCardSet(cursor.getString(2));
-        card.setType(cursor.getString(3));
-        card.setFaction(cursor.getString(4));
-        card.setPlayerClass(cursor.getString(5));
-        card.setRarity(cursor.getString(6));
-        card.setText(cursor.getString(7));
-        card.setFlavor(cursor.getString(8));
-        card.setArtist(cursor.getString(9));
-        card.setCost(cursor.getInt(10));
-        card.setAttack(cursor.getInt(11));
-        card.setHealth(cursor.getInt(12));
+        card.setCardId(cursor.getString(cursor.getColumnIndex(CardSQLiteHelper.COLUMN_CARDS_CARD_ID)));
+        card.setName(cursor.getString(cursor.getColumnIndex(CardSQLiteHelper.COLUMN_CARDS_CARD_NAME)));
+        card.setCardSet(cursor.getString(cursor.getColumnIndex(CardSQLiteHelper.COLUMN_CARDS_CARD_SET)));
+        card.setType(cursor.getString(cursor.getColumnIndex(CardSQLiteHelper.COLUMN_CARDS_CARD_TYPE)));
+        card.setFaction(cursor.getString(cursor.getColumnIndex(CardSQLiteHelper.COLUMN_CARDS_CARD_FACTION)));
+        card.setPlayerClass(cursor.getString(cursor.getColumnIndex(CardSQLiteHelper.COLUMN_CARDS_CARD_PLAYER_CLASS)));
+        card.setRarity(cursor.getString(cursor.getColumnIndex(CardSQLiteHelper.COLUMN_CARDS_CARD_RARITY)));
+        card.setText(cursor.getString(cursor.getColumnIndex(CardSQLiteHelper.COLUMN_CARDS_CARD_TEXT)));
+        card.setFlavor(cursor.getString(cursor.getColumnIndex(CardSQLiteHelper.COLUMN_CARDS_CARD_FLAVOR)));
+        card.setArtist(cursor.getString(cursor.getColumnIndex(CardSQLiteHelper.COLUMN_CARDS_CARD_ARTIST)));
+        card.setCost(cursor.getInt(cursor.getColumnIndex(CardSQLiteHelper.COLUMN_CARDS_CARD_COST)));
+        card.setAttack(cursor.getInt(cursor.getColumnIndex(CardSQLiteHelper.COLUMN_CARDS_CARD_ATTACK)));
+        card.setHealth(cursor.getInt(cursor.getColumnIndex(CardSQLiteHelper.COLUMN_CARDS_CARD_HEALTH)));
         // handle logic here to extract mechanics from json
         card.setMechanics(null);
-        card.setElite(cursor.getInt(14));
-        card.setCollectible(cursor.getInt(15));
-        card.setImg(cursor.getString(16));
+        card.setElite(cursor.getInt(cursor.getColumnIndex(CardSQLiteHelper.COLUMN_CARDS_CARD_ELITE)));
+        card.setCollectible(cursor.getInt(cursor.getColumnIndex(CardSQLiteHelper.COLUMN_CARDS_CARD_COLLECTIBLE)));
+        card.setImg(cursor.getString(cursor.getColumnIndex(CardSQLiteHelper.COLUMN_CARDS_CARD_IMG_URL)));
         // handle logic here to extract bitmap from encoded string
-        card.setBitmapImg(null);
-        card.setImgGold(cursor.getString(18));
+        card.setImgByteArray(null);
+        card.setImgGold(cursor.getString(cursor.getColumnIndex(CardSQLiteHelper.COLUMN_CARDS_CARD_IMG_GOLD_URL)));
         // handle logic here to extract bitmap from encoded string
-        card.setBitmapImgGold(null);
+        card.setImgGoldByteArray(null);
         return card;
+    }
+
+    public void dropEverything() {
+        database.execSQL("DROP TABLE IF EXISTS "  + CardSQLiteHelper.TABLE_CARDS);
     }
 }
