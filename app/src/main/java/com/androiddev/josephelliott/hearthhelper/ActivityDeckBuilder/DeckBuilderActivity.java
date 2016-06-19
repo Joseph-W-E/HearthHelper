@@ -1,4 +1,4 @@
-package com.androiddev.josephelliott.hearthhelper.DeckBuilderActivity;
+package com.androiddev.josephelliott.hearthhelper.ActivityDeckBuilder;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -11,7 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
 
-import com.androiddev.josephelliott.hearthhelper.Model.CardSetWrapper;
+import com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Model.CardSetWrapper;
 import com.androiddev.josephelliott.hearthhelper.R;
 
 public class DeckBuilderActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {

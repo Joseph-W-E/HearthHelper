@@ -20,5 +20,5 @@
     android:gravity="center"
 
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".AllCardsActivity.AllCardsActivity"
+    tools:context=".ActivityAllCards.AllCardsActivity"
     tools:showIn="@layout/main_activity_app_bar"/>

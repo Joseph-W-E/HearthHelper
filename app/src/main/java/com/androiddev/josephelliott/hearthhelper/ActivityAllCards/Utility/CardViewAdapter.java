@@ -1,4 +1,4 @@
-package com.androiddev.josephelliott.hearthhelper.AllCardsActivity;
+package com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Utility;
 
 import android.content.Context;
 import android.util.Log;
@@ -7,9 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.androiddev.josephelliott.hearthhelper.Model.Card;
-import com.androiddev.josephelliott.hearthhelper.Model.CardSetWrapper;
-import com.androiddev.josephelliott.hearthhelper.Utility.CustomAsyncTask;
+import com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Model.Card;
+import com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Model.CardSetWrapper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,14 +21,10 @@ public class CardViewAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Card> cards;
 
-    public CardViewAdapter(Context c, CardSetWrapper cardSetWrapper) {
+    public CardViewAdapter(Context c, ArrayList<Card> cards) {
         this.context = c;
-        try {
-            cards = cardSetWrapper.getAllCards();
-            Collections.sort(cards);
-        } catch (NullPointerException e) {
-            cards = new ArrayList<>();
-        }
+        this.cards = cards != null ? cards : new ArrayList<Card>();
+        Collections.sort(cards);
     }
 
     @Override
@@ -58,8 +53,8 @@ public class CardViewAdapter extends BaseAdapter {
 
             // if our card for this position doesn't have an image, get one
             if (cards.get(position).getBitmapImg() == null) {
-                CustomAsyncTask customAsyncTask = new CustomAsyncTask(cards.get(position).getBitmapImg(), imageView);
-                customAsyncTask.execute(cards.get(position).getImg());
+                BitmapToImageViewAsyncTask bitmapToImageViewAsyncTask = new BitmapToImageViewAsyncTask(cards.get(position).getBitmapImg(), imageView);
+                bitmapToImageViewAsyncTask.execute(cards.get(position).getImg());
                 Log.d("Asynctask", "Running an async task for " + cards.get(position).getName());
             } else {
                 imageView.setImageBitmap(cards.get(position).getBitmapImg());

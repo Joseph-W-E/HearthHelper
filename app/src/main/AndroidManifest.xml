@@ -20,19 +20,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AllCardsActivity.AllCardsActivity"
+            android:name=".ActivityAllCards.AllCardsActivity"
             android:label="@string/all_cards_activity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".ChallengeActivity.ChallengeActivity"
+        <activity android:name=".ActivityChallenge.ChallengeActivity"
             android:label="@string/challenge_activity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".DeckBuilderActivity.DeckBuilderActivity"
+        <activity android:name=".ActivityDeckBuilder.DeckBuilderActivity"
             android:label="@string/deck_builder_activity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".WinTrackerActivity.WinTrackerActivity"
+        <activity android:name=".ActivityWinTracker.WinTrackerActivity"
             android:label="@string/win_tracker_activity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

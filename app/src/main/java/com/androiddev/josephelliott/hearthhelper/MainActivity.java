@@ -13,10 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.androiddev.josephelliott.hearthhelper.AllCardsActivity.AllCardsActivity;
-import com.androiddev.josephelliott.hearthhelper.ChallengeActivity.ChallengeActivity;
-import com.androiddev.josephelliott.hearthhelper.DeckBuilderActivity.DeckBuilderActivity;
-import com.androiddev.josephelliott.hearthhelper.WinTrackerActivity.WinTrackerActivity;
+import com.androiddev.josephelliott.hearthhelper.ActivityAllCards.AllCardsActivity;
+import com.androiddev.josephelliott.hearthhelper.ActivityChallenge.ChallengeActivity;
+import com.androiddev.josephelliott.hearthhelper.ActivityDeckBuilder.DeckBuilderActivity;
+import com.androiddev.josephelliott.hearthhelper.ActivityWinTracker.WinTrackerActivity;
 
 
 /**

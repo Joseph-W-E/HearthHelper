@@ -1,4 +1,4 @@
-package com.androiddev.josephelliott.hearthhelper.Model;
+package com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Model;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -1,15 +1,15 @@
-package com.androiddev.josephelliott.hearthhelper.Model;
+package com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Model;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.StrictMode;
 
-import com.androiddev.josephelliott.hearthhelper.Utility.CustomAsyncTask;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * Created by Joseph Elliott on 5/14/2016.
@@ -61,8 +61,8 @@ public class Card implements Comparable<Card> {
     @SerializedName("health")
     private int health;
 
-    //@SerializedName("mechanics")
-    //private String[] mechanics;
+    @SerializedName("mechanics")
+    private ArrayList<MechanicsWrapper> mechanics;
 
     @SerializedName("elite")
     private boolean elite;
@@ -186,15 +186,13 @@ public class Card implements Comparable<Card> {
         this.health = health;
     }
 
-    /*
-    public String[] getMechanics() {
+    public ArrayList<MechanicsWrapper> getMechanics() {
         return mechanics;
     }
 
-    public void setMechanics(String[] mechanics) {
+    public void setMechanics(ArrayList<MechanicsWrapper> mechanics) {
         this.mechanics = mechanics;
     }
-    */
 
     public boolean isElite() {
         return elite;
@@ -204,12 +202,20 @@ public class Card implements Comparable<Card> {
         this.elite = elite;
     }
 
+    public void setElite(int x) {
+        elite = x != 0;
+    }
+
     public boolean isCollectible() {
         return collectible;
     }
 
     public void setCollectible(boolean collectible) {
         this.collectible = collectible;
+    }
+
+    public void setCollectible(int x) {
+        collectible = x != 0;
     }
 
     public String getImg() {
@@ -246,7 +252,6 @@ public class Card implements Comparable<Card> {
 
     public void initializeBitmap() {
         if (bitmapImg == null) {
-
             try {
                 if (android.os.Build.VERSION.SDK_INT > 9) {
                     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -260,12 +265,6 @@ public class Card implements Comparable<Card> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
-            /*
-            CustomAsyncTask customAsyncTask = new CustomAsyncTask(bitmapImg);
-            customAsyncTask.execute(img);
-            */
         }
     }
 

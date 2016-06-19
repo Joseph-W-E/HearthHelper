@@ -1,14 +1,10 @@
-package com.androiddev.josephelliott.hearthhelper.Utility;
+package com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Utility;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ImageView;
 
-import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -22,11 +18,11 @@ import java.net.URL;
  * When this asynctask is finished, we need to notify the grid view
  * AND the list of cards. This keeps the grid and list decoupled.
  */
-public class CustomAsyncTask extends AsyncTask<String, Void, Bitmap> {
+public class BitmapToImageViewAsyncTask extends AsyncTask<String, Void, Bitmap> {
     private Bitmap imageReference;
     private ImageView imageView;
 
-    public CustomAsyncTask(Bitmap image, ImageView imageView) {
+    public BitmapToImageViewAsyncTask(Bitmap image, ImageView imageView) {
         this.imageReference = image;
         this.imageView = imageView;
     }

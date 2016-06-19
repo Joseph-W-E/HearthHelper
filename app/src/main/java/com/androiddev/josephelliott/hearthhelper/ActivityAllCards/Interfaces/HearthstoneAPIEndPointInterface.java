@@ -1,6 +1,6 @@
-package com.androiddev.josephelliott.hearthhelper.Interfaces;
+package com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Interfaces;
 
-import com.androiddev.josephelliott.hearthhelper.Model.CardSetWrapper;
+import com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Model.CardSetWrapper;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
