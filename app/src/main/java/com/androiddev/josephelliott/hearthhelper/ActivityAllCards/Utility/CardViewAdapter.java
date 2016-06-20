@@ -1,6 +1,8 @@
 package com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Utility;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +51,7 @@ public class CardViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView;
+        Card card = cards.get(position);
 
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
@@ -58,14 +61,8 @@ public class CardViewAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        /*
-        try {
-            BitmapUtility.BitmapToImageViewAsyncTask asyncTask = new BitmapUtility.
-                    BitmapToImageViewAsyncTask(cards.get(position), context);
-            asyncTask.execute();
-        } catch (NullPointerException e) {
-            Log.w("NullPointer", e);
-        }*/
+        Bitmap bitmap = BitmapUtility.decodeSampledBitmap(card.getImgByteArray(), 100, 200);
+        imageView.setImageBitmap(bitmap);
 
         return imageView;
     }

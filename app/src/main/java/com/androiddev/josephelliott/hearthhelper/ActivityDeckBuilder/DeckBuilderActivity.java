@@ -11,8 +11,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
 
+import com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Model.Card;
 import com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Model.CardSetWrapper;
+import com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Storage.CardDataSource;
+import com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Utility.BitmapUtility;
 import com.androiddev.josephelliott.hearthhelper.R;
+
+import org.json.JSONException;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class DeckBuilderActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -26,14 +34,15 @@ public class DeckBuilderActivity extends AppCompatActivity implements Navigation
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Setup the action bar
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override

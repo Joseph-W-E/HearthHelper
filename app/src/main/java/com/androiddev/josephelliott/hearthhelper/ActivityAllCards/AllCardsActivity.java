@@ -2,8 +2,6 @@ package com.androiddev.josephelliott.hearthhelper.ActivityAllCards;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Interfaces.HearthstoneAPIEndPointInterface;
@@ -26,11 +23,8 @@ import com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Utility.Bitmap
 import com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Utility.CardViewAdapter;
 import com.androiddev.josephelliott.hearthhelper.R;
 
-import org.json.JSONException;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -77,18 +71,13 @@ public class AllCardsActivity extends AppCompatActivity implements NavigationVie
             // Get all the cards from JSON, will update grid view on success
             Toast.makeText(this, "First time? Downloading all cards.", Toast.LENGTH_LONG).show();
             cards = JSONCallToGetAllCards(gridView, this);
-            // Since all of these cards are new, we need the bitmaps for them all
-            for (Card card : cards) {
-                card.initializeBitmap();
-                card.initializeGoldBitmap();
-            }
         } else {
             // Get all the cards from Local Storage, will update grid view manually
             Toast.makeText(this, "Cards already exist! Yippee!", Toast.LENGTH_LONG).show();
             try {
                 dataSource.open();
                 cards = dataSource.getCards();
-            } catch (SQLException | JSONException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
                 dataSource.close();
@@ -125,9 +114,9 @@ public class AllCardsActivity extends AppCompatActivity implements NavigationVie
      * Uses the REST api to get the entire list of cards from Mashape.
      * Note that the call is an async task. All the cards loaded are saved to local storage.
      * Once the cards are saved, they will begin displaying on the grid view.
-     * @param gridView
-     * @param context
-     * @return
+     * @param gridView The grid view of the main activity.
+     * @param context The context of the main activity.
+     * @return The list of cards generated from the JSON.
      */
     private ArrayList<Card> JSONCallToGetAllCards(final GridView gridView, final Context context) {
         // List of cards to return
@@ -151,14 +140,15 @@ public class AllCardsActivity extends AppCompatActivity implements NavigationVie
                         for (Card card : cards) {
                             dataSource.createCard(card);
                         }
-                    } catch (SQLException | JSONException e) {
+                    } catch (SQLException e) {
                         e.printStackTrace();
                     } finally {
                         dataSource.close();
                     }
+                    // Download all the cards' images and store them as byte[]
                     for (Card card : cards) {
-                            BitmapUtility.BitmapToImageViewAsyncTask asyncTask = new BitmapUtility.
-                                    BitmapToImageViewAsyncTask(card, context);
+                            BitmapUtility.BitmapDownloadToDatabaseAsyncTask asyncTask = new
+                                    BitmapUtility.BitmapDownloadToDatabaseAsyncTask(card, context);
                             asyncTask.execute();
                     }
                     // Update our grid view with the new list of cards

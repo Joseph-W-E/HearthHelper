@@ -7,10 +7,16 @@ import android.os.StrictMode;
 import com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Utility.BitmapUtility;
 import com.google.gson.annotations.SerializedName;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Joseph Elliott on 5/14/2016.
@@ -185,8 +191,24 @@ public class Card implements Comparable<Card> {
         return mechanics;
     }
 
+    public String getMechanicsAsJSON() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put("name", new JSONArray(getMechanics()));
+        return json.toString();
+    }
+
     public void setMechanics(ArrayList<MechanicsWrapper> mechanics) {
         this.mechanics = mechanics;
+    }
+
+    public void setMechanicsFromJSON(String json) throws JSONException {
+        JSONObject object = new JSONObject(json);
+        JSONArray array = object.getJSONArray("name");
+        ArrayList<MechanicsWrapper> mechanics = new ArrayList<>();
+        for (int i = 0; i < array.length(); i++) {
+            mechanics.add(new MechanicsWrapper(array.getString(i)));
+        }
+        setMechanics(mechanics);
     }
 
     public boolean isElite() {
@@ -245,30 +267,34 @@ public class Card implements Comparable<Card> {
         imgGoldByteArray = array;
     }
 
-    public void initializeBitmap() {
-        if (imgByteArray == null) {
-            try {
-                if (android.os.Build.VERSION.SDK_INT > 9) {
-                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                    StrictMode.setThreadPolicy(policy);
-                }
-                URL url = new URL(img);
-                Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                imgByteArray = BitmapUtility.getBytes(bmp);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void initializeGoldBitmap() {
-
-    }
-
     @Override
     public int compareTo(Card another) {
         return name.compareTo(another.getName());
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(getCardId() + ",");
+        builder.append(getName() + ",");
+        builder.append(getCardSet() + ",");
+        builder.append(getType() + ",");
+        builder.append(getFaction() + ",");
+        builder.append(getPlayerClass() + ",");
+        builder.append(getRarity() + ",");
+        builder.append(getText() + ",");
+        builder.append(getFlavor() + ",");
+        builder.append(getArtist() + ",");
+        builder.append(getCost() + ",");
+        builder.append(getAttack() + ",");
+        builder.append(getHealth() + ",");
+        builder.append((getMechanics() != null ? Arrays.toString(getMechanics().toArray()) : "") + ",");
+        builder.append((isElite() ? "true" : "false") + ",");
+        builder.append((isCollectible() ? "true" : "false") + ",");
+        builder.append(getImg() + ",");
+        builder.append((getImgByteArray() != null ? getImgByteArray().length : "0"));
+        builder.append(getImgGold() + ",");
+        builder.append((getImgGoldByteArray() != null ? getImgGoldByteArray().length : "0"));
+        return builder.toString();
     }
 }

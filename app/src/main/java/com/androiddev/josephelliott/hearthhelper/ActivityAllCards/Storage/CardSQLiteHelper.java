@@ -28,9 +28,9 @@ public class CardSQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_CARDS_CARD_ELITE = "elite";
     public static final String COLUMN_CARDS_CARD_COLLECTIBLE = "collectible";
     public static final String COLUMN_CARDS_CARD_IMG_URL = "imgUrl";
-    public static final String COLUMN_CARDS_CARD_IMG_BITMAP_AS_STRING = "imgBitmap";
+    public static final String COLUMN_CARDS_CARD_IMG_BITMAP_AS_BLOB = "imgBitmap";
     public static final String COLUMN_CARDS_CARD_IMG_GOLD_URL = "imgGoldUrl";
-    public static final String COLUMN_CARDS_CARD_IMG_GOLD_BITMAP_AS_STRING = "imgGoldBitmap";
+    public static final String COLUMN_CARDS_CARD_IMG_GOLD_BITMAP_AS_BLOB = "imgGoldBitmap";
 
     private static final String CARD_DATABASE_NAME = "cards.db";
     private static final int DATABASE_VERSION = 1;
@@ -54,9 +54,9 @@ public class CardSQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_CARDS_CARD_ELITE + ", "
             + COLUMN_CARDS_CARD_COLLECTIBLE + ", "
             + COLUMN_CARDS_CARD_IMG_URL + ", "
-            + COLUMN_CARDS_CARD_IMG_BITMAP_AS_STRING + ", "
+            + COLUMN_CARDS_CARD_IMG_BITMAP_AS_BLOB + ", "
             + COLUMN_CARDS_CARD_IMG_GOLD_URL + ", "
-            + COLUMN_CARDS_CARD_IMG_GOLD_BITMAP_AS_STRING + ");";
+            + COLUMN_CARDS_CARD_IMG_GOLD_BITMAP_AS_BLOB + ");";
 
     public CardSQLiteHelper(Context context) {
         super(context, CARD_DATABASE_NAME, null, DATABASE_VERSION);

@@ -7,10 +7,21 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Model.Card;
+import com.androiddev.josephelliott.hearthhelper.ActivityAllCards.Storage.CardDataSource;
 import com.androiddev.josephelliott.hearthhelper.R;
+
+import org.json.JSONException;
+
+import java.io.UnsupportedEncodingException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by JoeyElliott on 6/17/2016.
@@ -24,14 +35,31 @@ public class ChallengeActivity extends AppCompatActivity implements NavigationVi
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Setup the action bar
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        TextView textView = (TextView) findViewById(R.id.txt_challenge);
+        textView.setText("");
+        textView.setMovementMethod(new ScrollingMovementMethod());
+        CardDataSource dataSource = new CardDataSource(this);
+        try {
+            dataSource.open();
+            ArrayList<Card> cards = dataSource.getCards();
+            Collections.sort(cards);
+            for (Card card : dataSource.getCards()) {
+                textView.setText(textView.getText() + card.toString() + "\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            dataSource.close();
+        }
     }
 
     @Override
